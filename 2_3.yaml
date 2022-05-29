@@ -1,0 +1,58 @@
+name: binary increment
+source code: |
+  # 2_3
+  # на входе: слова, которые состоят из символов 1 и 0 и разделены пробелом (считаем, что пустое слово не слово)
+  # на выходе: слово минимальной длинны (первое)
+  input: '01 111 01 01 11 0'
+  blank: 'λ'
+  start state: start
+  table:
+    start:
+      [' ', '0', '1', 'a', 'b']: {L: start_H}
+    start_H:
+      ['λ', ' ']: {R: mark_ch}
+    mark_ch:
+      [' ', 'λ']: {R: clear_right_H}
+      '0': {write: 'a', R: next_word}
+      '1': {write: 'b', R: next_word}
+      ['a','b']: R
+    next_word:
+      ['0', '1', 'a', 'b']: R
+      ' ': {R: start}
+      'λ': {L: to_start}
+    to_start:
+      ['0', '1', 'a', 'b', ' ']: L
+      'λ': {R: start}
+    clear_right_H:
+      ['0', '1', 'a', 'b', ' ', 'λ']: {L: clear_right}
+    clear_right:
+      ['0', '1', 'a', 'b', ' ']: {write: 'λ', R}
+      'λ': {L: back_to_word}
+    back_to_word:
+      'λ': {L: back_to_word}
+      'a': {write: '0', L: recover_word}
+      'b': {write: '1', L: recover_word}
+    recover_word:
+      'a': {write: '0', L}
+      'b': {write: '1', L}
+      [' ', 'λ']: {write: 'λ', L: clear_left}
+    clear_left:
+      ['0', '1', 'a', 'b', ' ']: {write: 'λ', L}
+      'λ': {R: right_to_word}
+    right_to_word:
+      'λ': R
+      ['0', '1']: {L: end}
+    end:
+positions:
+  start: {x: 444.13, y: 95.31}
+  start_H: {x: 338.55, y: 96.59}
+  mark_ch: {x: 204.63, y: 200.33}
+  next_word: {x: 343.04, y: 228.37}
+  to_start: {x: 451.7, y: 232.2}
+  clear_right_H: {x: 105.07, y: 335.94}
+  clear_right: {x: 421.85, y: 327.72}
+  back_to_word: {x: 716.16, y: 322.44}
+  recover_word: {x: 713.34, y: 426.22}
+  clear_left: {x: 427.71, y: 425.01}
+  right_to_word: {x: 98, y: 420.32}
+  end: {x: 98.46, y: 480}

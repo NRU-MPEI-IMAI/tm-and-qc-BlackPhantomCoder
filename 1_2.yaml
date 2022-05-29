@@ -1,0 +1,58 @@
+name: binary increment
+source code: |-
+  # 2
+  # на входе: a*b (2 числа и *)
+  # на выходе: a*b=c (2 числа и * и результат после =)
+  input: '111*11'
+  blank: 'λ'
+  start state: mark_end
+  table:
+    mark_end:
+      '1': R
+      '*': R
+      'λ': {write: '=', L: mark_start}
+    mark_start:
+      '*': L
+      '1': L
+      'λ': {write: '|', R: mul_start}
+    mul_start:
+      '*': {L: clear}
+      '1': {write: 'λ', R: go_to_copy}
+      'λ': R
+    go_to_copy:
+      '1': R
+      '*': {R: copy_start}
+    copy_start:
+      'λ': R
+      '1': {write: 'λ', R: copy_find}
+      '=': {L: copy_end}
+    copy_find:
+      '=': R
+      '1': R
+      'λ': {write: 1, L: copy_back}
+    copy_back:
+      '1': L
+      '=': L
+      'λ': {R: copy_start}
+    copy_end:
+      'λ': {write: '1', L}
+      '*': {L: find_last_1}
+    find_last_1:
+      '1': L
+      'λ': {R: mul_start}
+    clear:
+      'λ': {write: '1', L}
+      '|': {write: 'λ', R: end}
+    end:
+positions:
+  mark_end: {x: 82.82, y: 81.54}
+  mark_start: {x: 250.35, y: 81.12}
+  mul_start: {x: 304.44, y: 237.73}
+  go_to_copy: {x: 457.75, y: 86.73}
+  copy_start: {x: 644.16, y: 85.02}
+  copy_find: {x: 528.42, y: 266.36}
+  copy_back: {x: 734.01, y: 262.66}
+  copy_end: {x: 638.57, y: 416.7}
+  find_last_1: {x: 456.83, y: 384.72}
+  clear: {x: 234.53, y: 362.58, fixed: false}
+  end: {x: 74, y: 356.18}

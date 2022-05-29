@@ -1,0 +1,23 @@
+name: binary increment
+source code: |-
+  # 1 
+  # на входе 2 числа через +
+  # на выходе - результат
+  input: '1+1111'
+  blank: 'λ'
+  start state: find_+
+  table:
+    find_+:
+      1: R
+      +: {write: 1, R: find_end}
+    find_end:
+      1: R
+      'λ': {L: erase_1}
+    erase_1:
+      1: {write: λ, L: end}
+    end:
+positions:
+  find_+: {x: 333.53, y: 160.91, fixed: false}
+  find_end: {x: 475.13, y: 173.12, fixed: false}
+  erase_1: {x: 476.31, y: 315.04, fixed: false}
+  end: {x: 335.84, y: 337.02, fixed: false}

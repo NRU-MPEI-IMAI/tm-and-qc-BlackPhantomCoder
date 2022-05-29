@@ -1,0 +1,81 @@
+name: binary increment
+source code: |-
+  # 2_1
+  # на входе: a - слово из 0,1,2
+  # на выходе: 0 - если не входит в L, 1 - если входит
+  input: '012'
+  blank: 'λ'
+  start state: start
+  table:
+    start:
+      'λ': {L: accept}
+      '0': {write: '*', R: set_0}
+      '1': {write: '*', R: set_1}
+      '2': {write: '*', R: set_2}
+      '*': R
+    set_0:
+      'λ': {L: reject}
+      ['0','*']: R
+      '1': {write: '*', R: set_01}
+      '2': {write: '*', R: set_02}
+    set_1:
+      'λ': {L: reject}
+      ['1','*']: R
+      '0': {write: '*', R: set_01}
+      '2': {write: '*', R: set_12}
+    set_2:
+      'λ': {L: reject}
+      ['2','*']: R
+      '0': {write: '*', R: set_02}
+      '1': {write: '*', R: set_12}
+    set_01:
+      'λ': {L: reject}
+      ['0', '1','*']: R
+      '2': {write: '*', R: go_to_start}
+    set_12:
+      'λ': {L: reject}
+      ['1', '2','*']: R
+      '0': {write: '*', R: go_to_start}
+    set_02:
+      'λ': {L: reject}
+      ['0', '2','*']: R
+      '1': {write: '*', R: go_to_start}
+    go_to_start:
+      ['λ', '0','1','2','*']: {L: go_to_start_1}
+    go_to_start_1:
+      'λ': {R: start}
+      ['0','1','2','*']: L
+    accept:
+      'λ': {R: erase_accept}
+      ['0', '1', '2', '*']: L
+    erase_accept:
+      'λ': {R: end_accept}
+      ['0', '1', '2', '*']: {write: 'λ', R}
+    end_accept:
+      'λ': {write: '1', R: end}
+    reject:
+      'λ': {R: erase_reject}
+      ['0', '1', '2', '*']: L
+    erase_reject:
+      'λ': {R: end_reject}
+      ['0', '1', '2', '*']: {write: 'λ', R}
+    end_reject:
+      'λ': {write: '0', R: end}
+    end:
+positions:
+  start: {x: 444.13, y: 95.31}
+  set_0: {x: 284.14, y: 149.11}
+  set_1: {x: 328.87, y: 195.7}
+  set_2: {x: 390.45, y: 245.48}
+  set_01: {x: 125.88, y: 227.2}
+  set_12: {x: 142.96, y: 343.43}
+  set_02: {x: 201.18, y: 442.24}
+  go_to_start: {x: 28.35, y: 383.91}
+  go_to_start_1: {x: 55.79, y: 68.94}
+  accept: {x: 574.42, y: 73.06}
+  erase_accept: {x: 669.43, y: 78}
+  end_accept: {x: 773.02, y: 76.99}
+  reject: {x: 562.61, y: 290}
+  erase_reject: {x: 659.44, y: 296.24}
+  end_reject: {x: 766.19, y: 296.25}
+  end: {x: 767.92, y: 198.09}
